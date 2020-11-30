@@ -41,19 +41,19 @@
 	String name;							//关于学生的姓名
 	String code;							//关于学生的编号
 	String sexy;							//关于学生的性别
-	String age;								//关于学生的年龄
+	String age;							//关于学生的年龄
 	String grade;							//关于学生的班级
 	String major;							//关于学生的专业
 	//构造函数
-	Student(){								//无参构造函数
+	Student(){							//无参构造函数
 		
 	}
-	Student(String name,String code){		//带参构造函数
+	Student(String name,String code){				//带参构造函数
 		this.name = name;
 		this.code = code;
 	}
   ……
-  public String toString() {				//重写toString()方法
+  public String toString() {						//重写toString()方法
 		String information = "姓名："+name+"学号："+code+"年龄："+age+"班级："+grade+"专业："+major;
 		return information;
 	}
@@ -61,8 +61,32 @@
 ```
 //在Test.java中创建txt()方法,通过FileReader && FileWriter对BIPT.txt文件进行读写;
 public static void txt(){
+		
+		Student student = new Student();
+		Scanner scanner = new Scanner(System.in);
+		//请输入姓名，编号，性别，年龄，班级，专业;
+		System.out.print("姓名\n");
+		student.name = scanner.next();
+		System.out.print("学号\n");
+		student.code = scanner.next();
+		System.out.print("性别\n");
+		student.sexy = scanner.next();
+		System.out.print("年龄\n");
+		student.age = scanner.next();
+		System.out.print("班级\n");
+		student.grade = scanner.next();
+		System.out.print("专业\n");
+		student.major = scanner.next();
+
 		File file = new File("E:\\BIPT.txt");                               //通过File获取E盘下的BIPT.txt文档的路径;  
 		try {                                                               //try{}catch(){}异常捕获机制,捕获运行过程出现的异常问题并抛出;
+		
+			FileReader fInputStream = new FileReader(file);			
+			FileWriter fOutputStream  = new FileWriter("E:\\BIPT2.txt");
+			char[] b = student.toString().toCharArray();			//将toString转换为字符流
+			fOutputStream.write(b);						//通过FileWriter输出在文件BIPT2.txt中
+			fOutputStream.write("\n\n");
+			
 			FileReader fInputStream = new FileReader(file);                   //FileReader方法读取File方法中的路径中的文件,方便进行下一步操作;
 			FileWriter fOutputStream  = new FileWriter("E:\\BIPT2.txt");      //FileWriter方法将运行后的结果正确的输出在BIPT2.txt文件中,此时文件未创建在对BIPT2进行写的操作的时候,会自动创建;
 			int p=(int)file.length();                                         //通过length()方法获取BIPT.txt文件的字节长度并强制转换为int型;
@@ -95,9 +119,54 @@ public static void txt(){
 		}
 	}
 ```
+```
+/**
+*本段代码是完成查找，字或词出现次数；
+*/
+
+public static void select() {
+		File file = new File("E:\\BIPT.txt");				//获取要查找的文件路径
+		try {
+			FileInputStream fis = new FileInputStream(file);	//将路径通过FileInputStream方法进行读取
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();//通过ByteArrayOutputStream方法进行字节数组输出流在内存中创建一个字节数组缓冲区
+			
+			int len;
+			byte[] data = null;
+			byte[] buffer = new byte[(int)file.length()];		//获取file的长度并给buffer
+			
+			while((len=fis.read(buffer)) != -1) {
+				bos.write(buffer, 0, len);
+			}	
+			
+			data = bos.toByteArray();
+			String str = new String (data);
+			
+			int count = 0;
+			Scanner sc = new Scanner(System.in);
+			System.out.println("输入你要查找的字或词：");
+			char o = sc.next().charAt(0);
+			char[] ch = str.toCharArray();
+			for(int i = 0;i<ch.length;i++) {
+				if(o==ch[i]) {
+					count++;
+				}
+			}
+			System.out.println("共出现"+count+"次");		//在控制台输出结果
+			fis.close();
+			bos.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+```
 ### ___实验运行结果___  
-![结果图](https://github.com/Traveller-g/Task/blob/main/img/result1.jpg)  
-![结果图](https://github.com/Traveller-g/Task/blob/main/img/result.jpg)  
+![结果图](https://github.com/Traveller-g/Task/blob/main/img/new1606741381.jpg)  
+![结果图](https://github.com/Traveller-g/Task/blob/main/img/1606741450.jpg)  
 ### ___编程感想___  
 通过本次实验让我对字符流的抽象基类进行了了解和实践，例如字符输入流和字符输出流有了更深刻的认识  
 我认为只要通过实践才能对代码进行更好的掌握。  
